@@ -1,6 +1,6 @@
 require('dotenv').config()
 /*
-
+  (COMPLETED)
   PORT=5000
   NODE_ENV=development
   DEV_DATABASE_URL='postgresql://postgres:password@localhost:5432/database_name'
@@ -15,6 +15,7 @@ require('dotenv').config()
     - testing_database_name (use the real name of the testing database you created in pgAdmin 4)
 
 */
+//Pulling Postgres:
 const pg = require('pg')
 
 if (process.env.DATABASE_URL) {
