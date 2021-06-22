@@ -4,10 +4,8 @@ const router = express.Router();
 
 
 //ENDPOINTS
-
 //[GET] All Classes
-
-router.get("/", (req, res, next)=>{
+router.get("/", (req, res)=>{
     Classes.getAllClasses()
     .then((allClasses)=>{
         res.status(200).json(allClasses);
@@ -17,30 +15,8 @@ router.get("/", (req, res, next)=>{
     })
 })
 
-//[GET] Class By Id
-
-router.get("/:id", (req, res, next)=>{
-    
-const { id } = req.params;
-
-if(id){
-    Classes.getById(id)
-    .then((specificClass)=>{
-        res.status(200).json(specificClass[0]);
-    })
-    .catch((err)=>{
-        res.status(500).json({message: err.message});
-    })
-} else {
-    res.status(406).json({message: "Id Required"});
-}
-
-})
-
 //[GET] Class By ClassId
-
-router.get("/ClassId/:ClassId", (req, res, next)=>{
-    
+router.get("/ClassId/:ClassId", (req, res)=>{
     const { ClassId } = req.params;
     
     if(ClassId){
@@ -54,35 +30,10 @@ router.get("/ClassId/:ClassId", (req, res, next)=>{
     } else {
         res.status(406).json({message: "Class Id Required"});
     }
-    
-    })
-
-//[PUT] / Update Class By id
-
-router.put("/:id", (req, res, next)=>{
-
-    const updatedClass = req.body;
-
-    const { id } = req.params;
-
-    if(updatedClass.Name){
-        Classes.updateClass(updatedClass, id)
-            .then((update)=>{
-                res.status(200).json(update[0]);
-            })
-            .catch((err)=>{
-                res.status(500).json({message: err.message});
-            })
-    } else {
-        res.status(406).json({message: "Id and Name are required"});
-    }
-    
 })
 
 //[PUT] / Update Class By ClassId
-
-router.put("/ClassId/:Classid", (req, res, next)=>{
-
+router.put("/ClassId/:Classid", (req, res)=>{
     const updatedClass = req.body;
 
     if(updatedClass.Name && updatedClass.ClassId){
@@ -94,14 +45,12 @@ router.put("/ClassId/:Classid", (req, res, next)=>{
                 res.status(500).json({message: err.message});
             })
     } else {
-        res.status(406).json({message: "ClassId and Name are required"});
+        res.status(406).json({message: "ClassId And Name Are Required"});
     }
-    
 })
 
 //[POST] New Class
-
-router.post("/", (req, res, next)=>{
+router.post("/", (req, res)=>{
 
     const newClass = req.body;
 
@@ -115,35 +64,15 @@ router.post("/", (req, res, next)=>{
                 res.status(500).json({message: err.message});
             })
         } else {
-            res.status(406).json({message: "ClassId must be a number"});
+            res.status(406).json({message: "ClassId Must Be A Number"});
         }
     } else {
-        res.status(406).json({message: "ClassId and Name are required"});
+        res.status(406).json({message: "ClassId And Name Are Required"});
     }
-
-
-    
-})
-
-//[DELETE] Class By Id
-
-router.delete("/:id", (req, res, next)=>{
-    
-    const { id } = req.params;
-
-    Classes.deleteClass(id)
-    .then((resolution)=>{
-        res.status(200).json(resolution);
-    })
-    .catch((err)=>{
-        res.status(500).json({message: err.message});
-    })
-
 })
 
 //[DELETE] Class By ClassId
-
-router.delete("/ClassId/:ClassId", (req, res, next)=>{
+router.delete("/ClassId/:ClassId", (req, res)=>{
     
     const { ClassId } = req.params;
 

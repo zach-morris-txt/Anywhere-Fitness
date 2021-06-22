@@ -6,60 +6,43 @@ function getAllUsers(){
 }
 
 function getUserByUserId(UserId){
-    return db("Users").where("UserId", UserId)
+    return db("Users").where("User_Id", UserId)
 }
 
-function getUserById(Id){
-    return db("Users").where("Id", Id)
+function getBy(filter) {
+    return db("Users as U")
+      .select("U.User_Id", "U.User_Username")
+      .where(filter);
 }
 
-async function createUser(ClassId){
-    await db("Users").insert(ClassId)
-
-    return db("Users").where("id", newId).first();
+async function createUser(credentials){
+    const [UserId] = await db("Users").insert(credentials)
+    return getUserByUserId(UserId) ;
 }
 
 async function updateUserByUserId(UpdatedUser){
     await db("Users")
-        .where("UserId", UpdatedUser.UserId)
+        .where("User_Id", UpdatedUser.UserId)
         .update(UpdatedUser)
-
     return getUserByUserId(UpdatedUser.UserId);
-}
-
-async function updateUserById(UpdatedUser, Id){
-    await db("Users")
-        .where("Id", Id)
-        .update(UpdatedUser)
-
-    return getUserById(Id);
 }
 
 async function deleteUserByUserId(UserIdToRemove){
     await db("Users")
-        .where("UserId", UserIdToRemove)
+        .where("User_Id", UserIdToRemove)
         .del()
-
     return getAllUsers();
 }
 
-
-async function deleteUserById(IdToRemove){
-    await db("Users")
-        .where("Id", IdToRemove)
-        .del()
-}
-
-
 function getUsersClasses(UserId){
 
-    return db("UsersClassesIntermediary As UC")
-    .join("Users As U", "UC.User_Id", "U.Id")
-    .join("Classes As C", "UC.Class_Id", "C.Id")
-    .select("U.Id", "U.Username", "UC.Class_Id", "C.Name")
-    .where("U.Id", UserId)
+    return db("UsersClasses As UC")
+    .join("Users As U", "UC.User_Id", "U.User_Id")
+    .join("Classes As C", "UC.Class_Id", "C.Class_Id")
+    .select("U.User_Id", "U.User_Username", "UC.Class_Id", "C.Name")
+    .where("U.User_Id", UserId)
 }
 
 module.exports = {
-  getAllUsers, getUserByUserId, getUserById, createUser, updateUserByUserId, updateUserById, deleteUserByUserId, deleteUserById, getUsersClasses
+  getAllUsers, getUserByUserId, getBy, createUser, updateUserByUserId, deleteUserByUserId, getUsersClasses
 }
